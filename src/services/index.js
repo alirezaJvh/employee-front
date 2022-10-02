@@ -1,4 +1,8 @@
-import { loginEmployee } from './auth';
+import { loginEmployee, signupEmployee } from './auth';
 import { getEmployees } from './employee';
 
-export { loginEmployee, getEmployees }
+export { 
+    loginEmployee, 
+    signupEmployee,
+    getEmployees,
+}

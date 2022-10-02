@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { loginEmployee } from '../../services'
-import './Login.css'
 
 function Login({ dispatch }) {
     const [username, setUsername] = useState()

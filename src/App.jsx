@@ -17,8 +17,16 @@ function App() {
         <Suspense fallback={<p>Loading...</p>}>
             <Routes>
                 {/* <Route path="/" element={<}></Route> */}
-                <Route index element={<Home />}></Route>
-                <Route path="signup" element={<SingUp />}></Route>
+                <Route 
+                    index 
+                    element={<Home />}
+                >
+                </Route>
+                <Route 
+                    path="signup" 
+                    element={ <SingUp dispatch={dispatch}/> }
+                >
+                </Route>
             </Routes>
         </Suspense>
     );

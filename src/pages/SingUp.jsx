@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { useAuth } from './../context/AuthContext'
-import { Navigate } from 'react-router-dom'
-
-function SingUp() {
+import { Navigate, useNavigate } from 'react-router-dom'
+import { signupEmployee, loginEmployee } from './../services'
+function SingUp({ dispatch }) {
     const [
         {
             username,
@@ -10,19 +10,40 @@ function SingUp() {
             password,
             firstName,
             lastName,
-            addresses
+            // addresses
         },
         setForm
     ] = useState({
-        username: '',
-        email: '',
-        password: '',
-        firstName: '',
-        lastName: '',
-        addresses: ''
+        username: 'sina',
+        email: 'sina@gmail.com',
+        password: 'sina',
+        firstName: 'ssss',
+        lastName: 'jjjj',
+        // addresses: ''
     })
-
     const { isAuth } = useAuth()
+    const navigate = useNavigate();
+
+    const inputHandler = (e) => {
+        e.preventDefault()
+        const name = e.target.name
+        const value = e.target.value
+        setForm(form => ({...form, [name]: value }))
+    }
+
+    const handleSubmit = async (e) => {
+        try {
+            e.preventDefault()
+            const input = { firstName, lastName, username, password, email }
+            await signupEmployee(input)
+            const payload = await loginEmployee({username, password})
+            if (payload) dispatch({ type: 'LOGIN', payload })
+            navigate('/')
+        } catch (e) {
+            console.log('error in signup')
+            console.log(e.message)
+        }
+    }
 
     if (isAuth) {
         return (<Navigate to={{ pathname: '/'}}/>)
@@ -31,55 +52,57 @@ function SingUp() {
     return(
         <div className="login-wrapper">
             <h1>Please SingUp</h1>
-            <form >
+            <form onSubmit={handleSubmit}>
                 <label>
                     <p>Username</p>
                     <input 
+                        name='username'
                         type="text" 
                         value={username} 
-                        onChange={e => setUsername(e.target.value)}
+                        onChange={inputHandler}
                     />
                 </label>
                 <label>
                     <p>Password</p>
                     <input 
+                        name="password"
                         type="password" 
                         value={password}
-                        onChange={e => setPassword(e.target.value)}
+                        onChange={inputHandler}
                     />
                 </label>
                 <label>
-                    <p>Addresses</p>
+                    <p>Email</p>
                     <input 
-                        type="password" 
+                        name="email"
                         value={email}
-                        onChange={e => setEmail(e.target.value)}
+                        onChange={inputHandler}
                     />
                 </label>
                 <label>
                     <p>FirstName</p>
                     <input 
-                        type="password" 
+                        name='firstName'
                         value={firstName}
-                        onChange={e => setFirstName(e.target.value)}
+                        onChange={inputHandler}
                     />
                 </label>
                 <label>
                     <p>LastName</p>
                     <input 
-                        type="password" 
+                        name="lastName"
                         value={lastName}
-                        onChange={e => setLastName(e.target.value)}
+                        onChange={inputHandler}
                     />
                 </label>
-                <label>
+                {/* <label>
                     <p>Addresses</p>
                     <input 
-                        type="password" 
+                        name='addresses'
                         value={addresses}
-                        onChange={e => setAddresses(e.target.value)}
+                        onChange={inputHandler}
                     />
-                </label>
+                </label> */}
                 <div>
                     <button type="submit">Submit</button>
                 </div>

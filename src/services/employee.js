@@ -5,11 +5,10 @@ const getEmployees = async ({ headers, page = 1, size = 10 }) => {
     try {
         const url = `/employee?size=${size}&page=${page}`
         const { data } = await axios({ headers, url })
-        return data
+        return Promise.resolve(data)
     } catch (e) {
-        console.log('error in getEmployees')
         console.log(e.message)
-        return e.message
+        return Promise.reject(e)
     }
 }
 
