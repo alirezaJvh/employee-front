@@ -5,12 +5,7 @@ import PropTypes from 'prop-types'
 import './Login.css'
 import { loginEmployee } from '../../services'
 function Login({ dispatch }) {
-    // const [, forceUpdate] = useState({})
-    // const [form] = Form.useForm()
     const { Title } = Typography
-    // const onFinish = ({username, password}) => {
-    //     console.log(values)
-    // } 
 
     const handleSubmit = async ({username, password}) => {
         try {

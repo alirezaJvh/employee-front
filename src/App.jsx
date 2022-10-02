@@ -3,24 +3,30 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import Login from './pages/Login/Login.jsx'
 import SingUp from './pages/SingUp.jsx'
 import { useAuth } from './context/AuthContext';
-const Home = lazy(() => import('./pages/Home.jsx'))
+import Home from './pages/Dashboard/Home/Home.jsx';
+
+const Dashboard = lazy(() => import('./pages/Dashboard/Dashboard.jsx'))
 
 function App() {
     const {isAuth, dispatch} = useAuth()
     const { pathname } = useLocation()
     if ((!isAuth) && (pathname !== '/signup')) {
-        {console.log( pathname )}
         return <Login dispatch={dispatch}/>
     }
 
     return (
         <Suspense fallback={<p>Loading...</p>}>
             <Routes>
-                {/* <Route path="/" element={<}></Route> */}
+                {/* <Route path="/" element={<DashboardLayout />}></Route> */}
                 <Route 
-                    index 
-                    element={<Home />}
+                    path='/' 
+                    element={<Dashboard />}
                 >
+                    <Route
+                        path='/'
+                        element={<Home />}
+                    >
+                    </Route>
                 </Route>
                 <Route 
                     path="signup" 
