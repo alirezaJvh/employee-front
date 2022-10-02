@@ -3,9 +3,9 @@ import React from 'react';
 import { useEmployees } from './../../../hooks/useEmployees'
 
 function Home() {
-    const { employees } = useEmployees()
+    const { employees, loading } = useEmployees()
     const title = ['Username', 'Email', 'First Name', 'Last Name', 'Role']
-
+    const dataSource = employees.map((item, key) => ({ ...item, key }))
     const createKey = (title) => {
         const str = title.replace(' ', '')
         return str.charAt(0).toLowerCase() + str.slice(1)
@@ -19,8 +19,11 @@ function Home() {
 
     return (
         <Card>
-            <Table dataSource={employees} columns={columns}></Table>
-            {employees.map((item, index) =>  <div key={index}>{item.username}</div>)}
+            <Table 
+                loading={loading} 
+                dataSource={dataSource} 
+                columns={columns}>
+            </Table>
         </Card>
     )
 }
