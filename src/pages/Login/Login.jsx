@@ -4,44 +4,44 @@ import { loginEmployee } from '../../services'
 import './Login.css'
 
 function Login({ dispatch }) {
-  const [username, setUsername] = useState()
-  const [password, setPassword] = useState()
+    const [username, setUsername] = useState()
+    const [password, setPassword] = useState()
 
-  const handleSubmit = async e => {
-    try {
-      e.preventDefault()
-      const payload = await loginEmployee({
-        username,
-        password,
-      })
-      if (payload.token) dispatch({ type: 'LOGIN', payload })
-    } catch (err) {
-      console.log(err)
+    const handleSubmit = async e => {
+        try {
+            e.preventDefault()
+            const payload = await loginEmployee({
+                username,
+                password,
+            })
+            if (payload.token) dispatch({ type: 'LOGIN', payload })
+        } catch (err) {
+            console.log(err)
+        }
     }
-  }
 
-  return(
-    <div className="login-wrapper">
-      <h1>Please Log In</h1>
-      <form onSubmit={handleSubmit}>
-        <label>
-          <p>Username</p>
-          <input type="text" onChange={e => setUsername(e.target.value)}/>
-        </label>
-        <label>
-          <p>Password</p>
-          <input type="password" onChange={e => setPassword(e.target.value)}/>
-        </label>
-        <div>
-          <button type="submit">Submit</button>
+    return(
+        <div className="login-wrapper">
+            <h1>Please Log In</h1>
+            <form onSubmit={handleSubmit}>
+                <label>
+                    <p>Username</p>
+                    <input type="text" onChange={e => setUsername(e.target.value)}/>
+                </label>
+                <label>
+                    <p>Password</p>
+                    <input type="password" onChange={e => setPassword(e.target.value)}/>
+                </label>
+                <div>
+                    <button type="submit">Submit</button>
+                </div>
+            </form>
         </div>
-      </form>
-    </div>
-  )
+    )
 }
 
 Login.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+    dispatch: PropTypes.func.isRequired,
 }
 
 export default Login
