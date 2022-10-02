@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from 'react';
+import React, { lazy, memo, Suspense } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Login from './pages/Login/Login.jsx'
 import SingUp from './pages/SingUp.jsx'
@@ -6,9 +6,7 @@ import { useAuth } from './context/AuthContext';
 const Home = lazy(() => import('./pages/Home.jsx'))
 
 function App() {
-  const {isAuth, employee, dispatch} = useAuth()
-  {console.log(isAuth)}
-  {console.log(employee)}
+  const {isAuth, dispatch} = useAuth()
   if (!isAuth) {
     return <Login dispatch={dispatch}/>
   }
@@ -24,4 +22,4 @@ function App() {
   );
 }
 
-export default App;
+export default memo(App);

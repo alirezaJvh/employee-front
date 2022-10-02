@@ -1,12 +1,9 @@
 import { createContext, useContext, useReducer } from 'react';
-
 const AuthContext = createContext()
 
 const reducer = (state, action) => {
   switch (action.type) {
   case 'LOGIN': {
-    console.log('login action')
-    console.log(action)
     const obj = saveToken(state, action)
     return obj
   }
@@ -21,10 +18,15 @@ const reducer = (state, action) => {
 
 const initAuthState = () => {
   const token = localStorage.getItem('token')
+  let headers = null
+  if(token) {
+    headers = setAxiosHeader(JSON.parse(token))
+  }
   let employee = localStorage.getItem('employee')
   employee = JSON.parse(employee)
   return {
     token,
+    headers,
     employee,
     isAuth: !!token,
   }
@@ -32,14 +34,20 @@ const initAuthState = () => {
 
 const saveToken = (state, { payload }) => {
   const {employee, token} = payload
+  const headers = setAxiosHeader(token)
   localStorage.setItem('employee', JSON.stringify(employee))
   localStorage.setItem('token', JSON.stringify(token))
   return {
     ...state,
-    employee,
     token,
+    headers,
+    employee,
     isAuth: true,
   }
+}
+
+const setAxiosHeader = (token) => {
+  return { authorization : token }
 }
 
 const clearToken = () => {
