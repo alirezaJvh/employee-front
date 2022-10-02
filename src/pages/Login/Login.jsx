@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { loginEmployee } from '../../services/auth'
+import { loginEmployee } from '../../services'
 import './Login.css'
 
 function Login({ dispatch }) {
@@ -14,9 +14,6 @@ function Login({ dispatch }) {
         username,
         password,
       })
-      console.log('here')
-      console.log(payload)
-      console.log(payload.token)
       if (payload.token) dispatch({ type: 'LOGIN', payload })
     } catch (err) {
       console.log(err)
