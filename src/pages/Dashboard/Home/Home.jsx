@@ -6,6 +6,7 @@ function Home() {
     const { employees, loading } = useEmployees()
     const title = ['Username', 'Email', 'First Name', 'Last Name', 'Role']
     const dataSource = employees.map((item, key) => ({ ...item, key }))
+    
     const createKey = (title) => {
         const str = title.replace(' ', '')
         return str.charAt(0).toLowerCase() + str.slice(1)

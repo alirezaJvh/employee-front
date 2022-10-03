@@ -1,7 +1,7 @@
 import React, { lazy, memo, Suspense } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import Login from './pages/Login/Login.jsx'
-import SingUp from './pages/SingUp.jsx'
+import SingUp from './pages/SingUp/SingUp.jsx'
 import { useAuth } from './context/AuthContext';
 import Home from './pages/Dashboard/Home/Home.jsx';
 
