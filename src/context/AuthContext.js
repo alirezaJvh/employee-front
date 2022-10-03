@@ -54,7 +54,7 @@ const clearToken = () => {
     localStorage.clear()
     return {
         isAuth: false,
-        user: null,
+        employee: null,
         token: null,
     }
 }

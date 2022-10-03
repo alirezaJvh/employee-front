@@ -1,4 +1,4 @@
-import { UserOutlined, LockOutlined, MailOutlined,  SettingOutlined, HomeOutlined } from '@ant-design/icons';
+import { UserOutlined, LockOutlined, MailOutlined, SettingOutlined, HomeOutlined } from '@ant-design/icons';
 // <MailOutlined />
 import { Button, Form, Input, Col, Row, Typography } from 'antd';
 import React, { useState } from 'react'

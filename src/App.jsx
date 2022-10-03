@@ -4,6 +4,7 @@ import Login from './pages/Login/Login.jsx'
 import SingUp from './pages/SingUp/SingUp.jsx'
 import { useAuth } from './context/AuthContext';
 import Home from './pages/Dashboard/Home/Home.jsx';
+import AddUser from './pages/Dashboard/AddUser/AddUser.jsx';
 
 const Dashboard = lazy(() => import('./pages/Dashboard/Dashboard.jsx'))
 
@@ -25,6 +26,11 @@ function App() {
                     <Route
                         path='/'
                         element={<Home />}
+                    >
+                    </Route>
+                    <Route 
+                        path='/add-employee' 
+                        element={<AddUser />}
                     >
                     </Route>
                 </Route>
