@@ -17,7 +17,7 @@ function Home() {
         dataIndex: createKey(item),
         key: createKey(item),
     }))
-
+    // TODO: pagination table
     return (
         <Card>
             <Table 
