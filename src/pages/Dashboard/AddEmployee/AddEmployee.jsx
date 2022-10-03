@@ -1,13 +1,15 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import { Button, Popconfirm, Table } from 'antd';
-import React, { useState } from 'react';
-import EditableRow  from '../../../components/EditableTable/EditableRow.jsx'
+import  { EditableRow, EditableContext }  from '../../../components/EditableTable/EditableRow.jsx'
 import EditableCell from '../../../components/EditableTable/EditableCell.jsx';
+import FileDragger from '../../../components/FileDragger.jsx';
+import { Button, Popconfirm, Table, Row, Col } from 'antd';
+import React, { useState, useContext } from 'react';
 import './AddEmployee.css'
 
 const AddEmployee = () => {
     const [employees, setEmployees] = useState([])
-    const [count, setCount] = useState(2);
+    const [count, setCount] = useState(0)
+    const form = useContext(EditableContext)
 
     const handleDelete = (key) => {
         const newData = employees.filter((item) => item.key !== key);
@@ -62,7 +64,16 @@ const AddEmployee = () => {
     ];
 
     const handleAdd = () => {
-        const newData = {};
+        const newData = {
+            key: count,
+            email: '',
+            username: '',
+            firstName: '',
+            lastName: '',
+            role: 'employee',
+            address: '',
+            password: '123',
+        };
         setEmployees([...employees, newData]);
         setCount(count + 1);
     };
@@ -95,20 +106,49 @@ const AddEmployee = () => {
                 title: col.title,
                 handleSave,
             }),
-        };
-    });
-    
+        }
+    })
+
+    const handleSubmit = async() => {
+        console.log(form)
+        console.log('send to the server')
+        console.log(employees)
+    }
+
     return (
         <div>
-            <Button
-                onClick={handleAdd}
-                type="primary"
-                style={{
-                    marginBottom: 16,
-                }}
-            >
-        Add a row
-            </Button>
+            <Row justify='center'>
+                <Col span={6}>
+                    <FileDragger setEmployees={setEmployees}/>
+                </Col>
+            </Row>
+            <Row>
+                <Col>
+                    <Button
+                        onClick={handleAdd}
+                        type="primary"
+                        style={{
+                            marginBottom: 15,
+                            marginTop: 30,
+                        }}
+                    >
+                    Add a row
+                    </Button>
+                </Col>
+                <Col>
+                    <Button 
+                        type="primary" 
+                        onClick={handleSubmit}
+                        style={{
+                            marginBottom: 15,
+                            marginTop: 30,
+                            marginLeft: 10,
+                        }}
+                    >
+                            Save Employee
+                    </Button>
+                </Col>
+            </Row>
             <Table
                 bordered
                 components={components}

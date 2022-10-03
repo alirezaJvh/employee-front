@@ -12,9 +12,9 @@ function EditableCell ({
     handleSave,
     ...restProps
 }) {
-    const [editing, setEditing] = useState(false);
-    const inputRef = useRef(null);
-    const form = useContext(EditableContext);
+    const [editing, setEditing] = useState(false)
+    const inputRef = useRef(null)
+    const form = useContext(EditableContext)
     useEffect(() => {
         if (editing) {
             console.log(dataIndex)

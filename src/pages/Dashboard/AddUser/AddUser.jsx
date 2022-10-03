@@ -1,10 +1,12 @@
 
 import { InboxOutlined } from '@ant-design/icons';
-import { Card, Row, Col, Table, notification } from 'antd';
+import { Card, Row, Col, Table, Button, notification } from 'antd';
 import { message, Upload } from 'antd';
 import React, { useState } from 'react';
 import papaparse from 'papaparse'
 import './AddUser.css'
+import EditableRow from '../../../components/EditableTable/EditableRow.jsx';
+import EditableCell from '../../../components/EditableTable/EditableCell.jsx';
 
 function AddUser() {
     const { Dragger } = Upload;
@@ -20,6 +22,15 @@ function AddUser() {
         title: item,
         dataIndex: createKey(item),
         key: createKey(item),
+        editable: true,
+        onCell: (record) => ({
+            record,
+            editable: true,
+            dataIndex: createKey(item),
+            key: createKey(item),
+            title: item,
+            handleSave,
+        }),
     }))
 
     const openNotificationWithIcon = ({message, description, type, placement='bottom'}) => {
@@ -88,6 +99,26 @@ function AddUser() {
         }
     }
 
+    // const handleDelete = (key) => {
+    //     const newData = employees.filter(item => item.key !== key)
+    //     setEmployees(newData)
+    // }
+
+    const handleSave = (row) => {
+        const newData = [...employees]
+        const index = newData.findIndex((item) => row.key === item.key)
+        const item = newData[index]
+        newData.splice(index, 1, { ...item, ...row })
+        setEmployees(newData)
+    }
+    
+    const components = {
+        body: {
+            row: EditableRow,
+            cell: EditableCell
+        }
+    }
+
     return (
         <Card>
             <Row justify='center'>
@@ -105,9 +136,21 @@ function AddUser() {
                 </Col>
             </Row>
             <div className='table-container'>
+                <Row style={{marginBottom: 15}}>
+                    <Button type='primary'>
+                        Add a row
+                    </Button>
+                    <Button type='success' style={{marginLeft: 15}}>
+                        Send
+                    </Button>
+                </Row>
                 <Table 
+                    components={components}
                     dataSource={employees} 
-                    columns={columns}>
+                    rowClassName={() => 'editable-row'}
+                    columns={columns}
+                    bordered
+                >
                 </Table>
             </div>
         </Card>

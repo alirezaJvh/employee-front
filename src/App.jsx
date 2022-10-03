@@ -5,6 +5,7 @@ import SingUp from './pages/SingUp/SingUp.jsx'
 import { useAuth } from './context/AuthContext';
 import Home from './pages/Dashboard/Home/Home.jsx';
 import AddUser from './pages/Dashboard/AddUser/AddUser.jsx';
+import AddEmployee from './pages/Dashboard/AddEmployee/AddEmployee.jsx';
 
 const Dashboard = lazy(() => import('./pages/Dashboard/Dashboard.jsx'))
 
@@ -29,9 +30,13 @@ function App() {
                     >
                     </Route>
                     <Route 
-                        path='/add-employee' 
+                        path='/test' 
                         element={<AddUser />}
                     >
+                    </Route>
+                    <Route 
+                        path='/add-employee' 
+                        element={<AddEmployee />}>
                     </Route>
                 </Route>
                 <Route 
