@@ -1,14 +1,16 @@
 import { LockOutlined, UserOutlined, SettingOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Col, Row, Typography } from 'antd';
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import './Login.css'
 import { loginEmployee } from '../../services'
 function Login({ dispatch }) {
+    const [loading, setLoading] = useState(false)
     const { Title } = Typography
 
     const handleSubmit = async ({username, password}) => {
         try {
+            setLoading(loading => !loading)
             const payload = await loginEmployee({
                 username,
                 password,
@@ -16,6 +18,8 @@ function Login({ dispatch }) {
             if (payload.token) dispatch({ type: 'LOGIN', payload })
         } catch (err) {
             console.log(err)
+        } finally {
+            setLoading(loading => !loading)
         }
     }
     return (
@@ -65,6 +69,7 @@ function Login({ dispatch }) {
                     </Form.Item>
                     <Form.Item>
                         <Button 
+                            loading={loading}
                             type="primary" 
                             htmlType="submit"
                             className="login-form-button">
