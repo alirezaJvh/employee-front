@@ -19,7 +19,7 @@ function FileDragger({ setEmployees }) {
         errorsIndex.forEach((rowIdx, index) => {
             data.splice(rowIdx - index, 1)
         })
-        setEmployees(data)
+        return data
     }
 
     const openNotificationWithIcon = ({message, description, type, placement='bottom'}) => {
@@ -31,14 +31,14 @@ function FileDragger({ setEmployees }) {
     }
 
     const getContentFile = (res) => {
+        // FIXME: add key to the return obj
         const {data, errors} = res
         const notifObj = {type: 'warn', message: 'Some row is incorrect!'}
         if (errors) {
             openNotificationWithIcon({...notifObj})
         }
         const correctedData = removeIncorrectRow(data, errors)
-        console.log(res)
-        console.log(correctedData)
+        setEmployees(correctedData)
     }
 
     const getFile = (file) => {
@@ -47,8 +47,8 @@ function FileDragger({ setEmployees }) {
             header: true,
             newline: '\n',
             error() {
-                const message = 'Error in parsing'
-                openNotificationWithIcon('error', { message })
+                const notifObj = {message: 'Error in parsing', type: 'error'}
+                openNotificationWithIcon({ ...notifObj })
             },
             transformHeader(header) {
                 return header.trim()

@@ -1,15 +1,17 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import  { EditableRow, EditableContext }  from '../../../components/EditableTable/EditableRow.jsx'
+import  { EditableRow }  from '../../../components/EditableTable/EditableRow.jsx'
 import EditableCell from '../../../components/EditableTable/EditableCell.jsx';
 import FileDragger from '../../../components/FileDragger.jsx';
-import { Button, Popconfirm, Table, Row, Col } from 'antd';
-import React, { useState, useContext } from 'react';
+import { Button, Popconfirm, Table, Row, Col, notification, Card } from 'antd';
+import { addEmployees } from '../../../services/employee.js';
+import React, { useState } from 'react';
 import './AddEmployee.css'
 
 const AddEmployee = () => {
     const [employees, setEmployees] = useState([])
     const [count, setCount] = useState(0)
-    const form = useContext(EditableContext)
+    const [loading, setLoading] = useState(false)
+    // const form = useContext(EditableContext)
 
     const handleDelete = (key) => {
         const newData = employees.filter((item) => item.key !== key);
@@ -66,12 +68,12 @@ const AddEmployee = () => {
     const handleAdd = () => {
         const newData = {
             key: count,
-            email: '',
-            username: '',
-            firstName: '',
-            lastName: '',
-            role: 'employee',
-            address: '',
+            email: 'email@example.com',
+            username: 'Username',
+            firstName: 'First Name',
+            lastName: 'Last Name',
+            role: 'EMPLOYEE',
+            address: 'Address',
             password: '123',
         };
         setEmployees([...employees, newData]);
@@ -109,16 +111,69 @@ const AddEmployee = () => {
         }
     })
 
+    const openNotificationWithIcon = ({message, description, type, placement='bottom'}) => {
+        notification[type]({
+            message,
+            description,
+            placement
+        })
+    }
+
+    const emptyFields = (input) => {
+        const keys = ['username', 'password', 'email', 'firstName', 'lastName', 'role', 'address']
+        const notValidItems = input.find((row) => {
+            const item =  keys.find(key => {
+                if(!row[key] && (row[key] !== 0)) {
+                    return key
+                }
+            })
+            return item
+        })
+        return notValidItems
+    }
+
+    const inputIsValid = () => {
+        const notifObj = {message: 'Fill all fields', type: 'error'}
+        if(emptyFields(employees)) {
+            openNotificationWithIcon({ ...notifObj })
+            return false
+        }
+        if(!employees.length) {
+            notifObj.message = 'Add a user'
+            openNotificationWithIcon({ ...notifObj })
+            return false
+        }
+        return true
+    }
+
     const handleSubmit = async() => {
-        console.log(form)
-        console.log('send to the server')
-        console.log(employees)
+        try {
+            if(inputIsValid()) {
+                setLoading(true)
+                await addEmployees(employees)
+                setEmployees([])
+                setLoading(false)
+                openNotificationWithIcon({ 
+                    type: 'success', 
+                    message: 'Add Users successfully!'
+                })
+            }
+        } catch ({ response }) {
+            console.log(response)
+            const description = response.data.message
+            setLoading(false)
+            openNotificationWithIcon({
+                type: 'error',
+                message: 'Error in create',
+                description
+            })
+        }
     }
 
     return (
-        <div>
+        <Card>
             <Row justify='center'>
-                <Col span={6}>
+                <Col span={8}>
                     <FileDragger setEmployees={setEmployees}/>
                 </Col>
             </Row>
@@ -151,13 +206,14 @@ const AddEmployee = () => {
             </Row>
             <Table
                 bordered
+                loading={loading}
                 components={components}
                 rowClassName={() => 'editable-row'}
                 pagination={false}
                 dataSource={employees}
                 columns={columns}
             />
-        </div>
+        </Card>
     );
 };
 
