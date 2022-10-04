@@ -1,11 +1,41 @@
 // eslint-disable
-import { Card, Table, Modal, Row, Button } from 'antd';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import React, { useState } from 'react';
+import { Card, Table, Modal, Row, Button, Form } from 'antd';
+import { DeleteOutlined, EditOutlined, UserOutlined, HomeOutlined, SafetyOutlined } from '@ant-design/icons';
+import UserDataForm, { validationMessages } from '../../../components/UserDataForm.jsx';
 import { useEmployees } from './../../../hooks/useEmployees'
+import React, { useState } from 'react';
 
 function Home() {
     const [open, setOpen] = useState()
+    const [form] = Form.useForm()
+    const { employees, loading } = useEmployees()
+    const dataSource = employees.map((item, key) => ({ ...item, key }))
+    const formInputs = [    
+        [
+            {
+                name: 'First Name', 
+                icon: UserOutlined,
+                rules: [{ required: true }]
+            },
+            {
+                name: 'Last Name', 
+                icon: UserOutlined,
+                rules: [{ required: true }]
+            }
+        ],
+        [
+            {
+                name: 'Address',
+                icon: HomeOutlined,
+                rules: []
+            },
+            {
+                name: 'role',
+                icon: SafetyOutlined,
+                rules: [],
+            }
+        ]
+    ]
     const [dataEdit, setDataEdit] = useState({
         username: '',
         email: '',
@@ -14,8 +44,6 @@ function Home() {
         role: '',
         address: '',
     })
-    const { employees, loading } = useEmployees()
-    const dataSource = employees.map((item, key) => ({ ...item, key }))
 
     const handleDelete = (data) => {
         console.log('delete')
@@ -24,6 +52,10 @@ function Home() {
 
     const handleEdit = (data) => {
         setDataEdit(data)
+        // form.setFieldValue({
+        //     username: 'alireza'
+        // })
+        console.log(form)
         setOpen(true)
         console.log('edit')
         console.log(dataEdit)
@@ -87,9 +119,17 @@ function Home() {
         <Card>
             <Modal 
                 open={open} 
+                width={600}
+                title='Edit Employee'
                 onCancel={() => setOpen(false)}
             >
-
+                <Form 
+                    form={form} 
+                    initialValues={dataEdit} 
+                    component={false} 
+                    validateMessages={validationMessages}>
+                    <UserDataForm formInputs={formInputs} />
+                </Form>
             </Modal>
             <Table 
                 bordered

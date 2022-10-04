@@ -1,12 +1,11 @@
 import { LockOutlined, SettingOutlined, HomeOutlined } from '@ant-design/icons';
-// <MailOutlined />
 import { Button, Form, Input, Col, Row, Typography } from 'antd';
-import React, { useState } from 'react'
 import { useAuth } from '../../context/AuthContext'
 import { Navigate, useNavigate } from 'react-router-dom'
-import './SingUp.css'
 import { signupEmployee, loginEmployee } from '../../services'
 import UserDataForm, { validationMessages, defaultInputs } from './../../components/UserDataForm.jsx'
+import React, { useState } from 'react'
+import './SingUp.css'
 
 function SingUp({ dispatch }) {
     const [loading, setLoading] = useState(false)
@@ -79,8 +78,6 @@ function SingUp({ dispatch }) {
                     validateMessages={validationMessages}
                 >
                     <UserDataForm formInputs={singupFormInputs}/>
-                    {/* {createRow().map(row => row)} */}
-
                     <Row justify='center'>
                         <Col span={23}>
                             <Form.Item name='address'>
