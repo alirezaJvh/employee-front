@@ -12,4 +12,14 @@ const getEmployees = async ({ headers, page = 1, size = 10 }) => {
     }
 }
 
-export { getEmployees } 
+const addEmployees = async (input) => {
+    try {
+        const msg = await axios.post('/employee', input)
+        return Promise.resolve(msg)
+    } catch (e) {
+        console.log(e.message)
+        return Promise.reject(e)
+    }
+}
+
+export { getEmployees, addEmployees } 
