@@ -1,4 +1,4 @@
-import { UserOutlined, LockOutlined, MailOutlined, SettingOutlined, HomeOutlined } from '@ant-design/icons';
+import { LockOutlined, SettingOutlined, HomeOutlined } from '@ant-design/icons';
 // <MailOutlined />
 import { Button, Form, Input, Col, Row, Typography } from 'antd';
 import React, { useState } from 'react'
@@ -6,12 +6,14 @@ import { useAuth } from '../../context/AuthContext'
 import { Navigate, useNavigate } from 'react-router-dom'
 import './SingUp.css'
 import { signupEmployee, loginEmployee } from '../../services'
+import UserDataForm, { validationMessages, defaultInputs } from './../../components/UserDataForm.jsx'
 
 function SingUp({ dispatch }) {
     const [loading, setLoading] = useState(false)
     const { Title } = Typography
     const { isAuth } = useAuth()
     const navigate = useNavigate();
+    const cloneFormInputs = defaultInputs.map(row => row)
 
     const checkPassword = ({ getFieldValue }) => ({
         validator(_, value) {
@@ -20,31 +22,7 @@ function SingUp({ dispatch }) {
         }
     })
 
-    const formInpus = [
-        [
-            {
-                name: 'Username',
-                icon: UserOutlined,
-                rules: [{ required: true }]
-            },
-            {
-                name: 'Email',
-                icon: MailOutlined,
-                rules: [{ required: true }, { type: 'email' }]
-            },
-        ], 
-        [
-            {
-                name: 'First Name', 
-                icon: UserOutlined,
-                rules: [{ required: true }]
-            },
-            {
-                name: 'Last Name', 
-                icon: UserOutlined,
-                rules: [{ required: true }]
-            }
-        ], 
+    const passwordInputs = [
         [
             {
                 name: 'Password',
@@ -59,14 +37,10 @@ function SingUp({ dispatch }) {
                 type: 'password',
                 rules: [{ required: true }, checkPassword]
             }
-        ],
+        ]
     ]
-    const validationMessages = {
-        required: '${label} is required!',
-        types: {
-            email: '${label} is not a valid email!',
-        }
-    }
+    const singupFormInputs = cloneFormInputs.concat(passwordInputs)
+    console.log(singupFormInputs)
 
     const handleSubmit = async ({ firstName, lastName, username, password, email, address }) => {
         try {
@@ -81,43 +55,6 @@ function SingUp({ dispatch }) {
         } finally {
             setLoading(loading => !loading)
         }
-    }
-
-    const createName = (col) => {
-        const str = col.replace(' ', '')
-        return str.charAt(0).toLowerCase() + str.slice(1)
-    }
-    
-    const createCol = ({name, rules, type, icon}) => {
-        return (
-            <Col 
-                span={11} 
-                key={name}>
-                <Form.Item
-                    name={createName(name)}
-                    rules={rules}
-                >
-                    <Input 
-                        placeholder={name} 
-                        type={type ?? 'text'}
-                        prefix={React.createElement(icon)} 
-                    />
-                </Form.Item>
-            </Col>
-        )
-    }
-    const createRow = () => {
-        const rowJxs = formInpus.map((row, rowIdx) => {
-            return (
-                <Row 
-                    key={`row-${rowIdx}`} 
-                    justify='space-around'
-                >
-                    {row.map(col => createCol(col))}
-                </Row>
-            )
-        })
-        return rowJxs
     }
 
     if (isAuth) {
@@ -141,8 +78,8 @@ function SingUp({ dispatch }) {
                     onFinish={handleSubmit}
                     validateMessages={validationMessages}
                 >
-
-                    {createRow().map(row => row)}
+                    <UserDataForm formInputs={singupFormInputs}/>
+                    {/* {createRow().map(row => row)} */}
 
                     <Row justify='center'>
                         <Col span={23}>
