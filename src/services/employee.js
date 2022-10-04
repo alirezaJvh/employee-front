@@ -12,9 +12,13 @@ const getEmployees = async ({ headers, page = 1, size = 10 }) => {
     }
 }
 
-const addEmployees = async (input) => {
+const addEmployees = async ({ headers, data }) => {
     try {
-        const msg = await axios.post('/employee', input)
+        const msg = await axios({
+            headers,
+            data,
+            url: '/employee'
+        })
         return Promise.resolve(msg)
     } catch (e) {
         console.log(e.message)
@@ -22,4 +26,39 @@ const addEmployees = async (input) => {
     }
 }
 
-export { getEmployees, addEmployees } 
+const editEmployees = async ({headers, data}) => {
+    try {
+        const res = await axios({ 
+            headers, 
+            data, 
+            url: '/employee',
+            method: 'PUT' 
+        })
+        return Promise.resolve(res)
+    } catch (e) {
+        console.log(e)
+        return Promise.reject(e)
+    }
+}
+
+const deleteEmployee = async ({headers, data}) => {
+    try {
+        const res = await axios({
+            headers,
+            data,
+            url: '/employee',
+            method: 'DELETE',
+        })
+        return Promise.resolve(res)
+    } catch (e) {
+        console.log(e)
+        return Promise.reject(e)
+    }
+}
+
+export { 
+    getEmployees, 
+    addEmployees,
+    editEmployees,
+    deleteEmployee,
+} 
