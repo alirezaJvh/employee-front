@@ -4,6 +4,7 @@ import EditableCell from '../../../components/EditableTable/EditableCell.jsx';
 import FileDragger from '../../../components/FileDragger.jsx';
 import { Button, Popconfirm, Table, Row, Col, notification, Card } from 'antd';
 import { addEmployees } from '../../../services/employee.js';
+import { useAuth } from './../../../context/AuthContext'
 import React, { useState } from 'react';
 import './AddEmployee.css'
 
@@ -11,6 +12,8 @@ const AddEmployee = () => {
     const [employees, setEmployees] = useState([])
     const [count, setCount] = useState(0)
     const [loading, setLoading] = useState(false)
+    const { headers } = useAuth()
+    
     // const form = useContext(EditableContext)
 
     const handleDelete = (key) => {
@@ -150,7 +153,7 @@ const AddEmployee = () => {
         try {
             if(inputIsValid()) {
                 setLoading(true)
-                await addEmployees(employees)
+                await addEmployees({ headers, data: employees })
                 setEmployees([])
                 setLoading(false)
                 openNotificationWithIcon({ 
