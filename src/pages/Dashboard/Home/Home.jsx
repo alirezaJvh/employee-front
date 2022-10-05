@@ -1,9 +1,10 @@
 import { Form, Input, Popconfirm, Table, Typography, Button, notification, Row } from 'antd';
 import { EditOutlined, DeleteOutlined, CloseCircleOutlined } from '@ant-design/icons';
-import React, { useState } from 'react';
 import { useEmployees } from '../../../hooks/useEmployees'
+import { useNavigate } from 'react-router-dom';
 import { editEmployees, deleteEmployee } from '../../../services/employee';
-import { useAuth } from '../../../context/AuthContext';
+import { useAuth } from '../../../context/AuthContext'
+import React, { useState } from 'react';
 
 const EditableCell = ({
     editing,
@@ -37,14 +38,14 @@ const EditableCell = ({
 };
 
 function AddUser() {
+    let { employees, totalItems, currentPage, loading, getEmployeePage } = useEmployees()
     const { headers, employee } = useAuth()
     const [form] = Form.useForm();
     const user = employee
-    let { employees, totalItems, currentPage, loading, getEmployeePage } = useEmployees()
+    const navigate = useNavigate()
     const [editingKey, setEditingKey] = useState('');
     const isEditing = (record) => record.id === editingKey;
-    {console.log('user')}
-    {console.log(user)}
+
     const edit = (record) => {
         form.setFieldsValue({
             ...record,
@@ -129,10 +130,6 @@ function AddUser() {
                 </Button>
             </Row>
         )
-        // console.log('Have Access')
-        // console.log('editingKey' + editingKey)
-        // console.log(user.role)
-        // return (editingKey !== '') && (user.role !== 'ADMIN')
     }
 
     const columns = [
@@ -207,7 +204,7 @@ function AddUser() {
                 editing: isEditing(record),
             }),
         };
-    });
+    })
     return (
         <>
             <Form form={form} component={false}>
@@ -222,6 +219,13 @@ function AddUser() {
                     dataSource={employees}
                     columns={mergedColumns}
                     rowClassName="editable-row"
+                    onRow={({ id }) => {
+                        return {
+                            onClick: () => {
+                                navigate(`/employee/${id}`)
+                            }
+                        }
+                    }}
                     pagination={{
                         onChange: getNextPage,
                         total: totalItems

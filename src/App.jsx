@@ -3,8 +3,10 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import Login from './pages/Login/Login.jsx'
 import SingUp from './pages/SingUp/SingUp.jsx'
 import { useAuth } from './context/AuthContext';
-import Home from './pages/Dashboard/Home/Home.jsx';
 import AddEmployee from './pages/Dashboard/AddEmployee/AddEmployee.jsx';
+
+const Home = lazy(() => import('./pages/Dashboard/Home/Home.jsx'))
+const EmployeeDetail = lazy(() => import('./pages/Dashboard/Employee/EmployeeDetail.jsx'))
 const Dashboard = lazy(() => import('./pages/Dashboard/Dashboard.jsx'))
 
 function App() {
@@ -30,6 +32,11 @@ function App() {
                     <Route 
                         path='/add-employee' 
                         element={<AddEmployee />}>
+                    </Route>
+                    <Route 
+                        path='/employee/:id' 
+                        element={<EmployeeDetail />}
+                    >
                     </Route>
                 </Route>
                 <Route 

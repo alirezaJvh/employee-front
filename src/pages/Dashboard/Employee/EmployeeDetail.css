@@ -1,0 +1,25 @@
+.avatar-container {
+    display: flex;
+    justify-content: center;
+}
+.w-100 {
+    width: 100%;
+}
+.details-container {
+    width: 100%;
+    margin-top: 40px;
+}
+.mt {
+    margin-top: 20px;
+}
+.title-info {
+    color: #1890ff;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+}
+.detail-info {
+    color: gray;
+    display: flex;
+    justify-content: center;
+}
