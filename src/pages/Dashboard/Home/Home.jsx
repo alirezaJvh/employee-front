@@ -38,7 +38,7 @@ const EditableCell = ({
 };
 
 function AddUser() {
-    let { employees, totalItems, currentPage, loading, getEmployeePage } = useEmployees()
+    let { employees, totalItems, currentPage, loading, getEmployeePage, setEmployee } = useEmployees()
     const { headers, employee } = useAuth()
     const [form] = Form.useForm();
     const user = employee
@@ -55,13 +55,11 @@ function AddUser() {
     }
 
     const deleteItem = async(e, { id }) => {
-        console.log('here')
         e.stopPropagation();  
         try {
-            // FIXME: remove deleted item
             const res = await deleteEmployee({ headers, data: { id } })
-            // const newData = employees.filter(item => item.id !== id)
-            // setEmployee(newData)
+            const newData = employees.filter(item => item.id !== id)
+            setEmployee((prev) => ({...prev, employees: newData}))
             notification['success']({
                 message: res.data.message,
                 placement: 'bottom',
