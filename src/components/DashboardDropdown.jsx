@@ -1,24 +1,31 @@
 import {  LogoutOutlined, UserOutlined } from '@ant-design/icons';
 import {  Menu, Dropdown, Space, Avatar } from 'antd';
-import { useAuth } from './../context/AuthContext'
+import { useAuth } from './../context/AuthContext';
 import React from 'react'
 
 function DashboardDropdown() {
-    const { employee } = useAuth()
+    const { employee, dispatch } = useAuth()
     const avatarDropDown = [
         {
-            key: '0',
+            key: 'profile',
             label: 'Profile',
             icon: React.createElement(UserOutlined)
         },
         {
-            key: '1',
+            key: 'logOut',
             label: 'Log Out',
             icon: React.createElement(LogoutOutlined)
         },
     ]
+
+    const handleMenuClick = (e) => {
+        if(e.key === 'logOut') {
+            dispatch({ type: 'LOGOUT'})
+        }
+    }
+    
     const menu = (
-        <Menu items={avatarDropDown}></Menu>
+        <Menu onClick={handleMenuClick} items={avatarDropDown}></Menu>
     )
     // TODO: implement logout button
     return (
