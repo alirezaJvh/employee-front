@@ -39,7 +39,7 @@ const EditableCell = ({
 function AddUser() {
     const { headers } = useAuth()
     const [form] = Form.useForm();
-    let { employees, loading } = useEmployees()
+    let { employees, totalItems, currentPage, loading, getEmployeePage } = useEmployees()
     const [editingKey, setEditingKey] = useState('');
     const isEditing = (record) => record.id === editingKey;
 
@@ -65,9 +65,16 @@ function AddUser() {
         }
     }
 
-    const cancel = () => {
-        setEditingKey('');
+    const getNextPage = async (page) => {
+        setEditingKey('')
+        if (currentPage !== page) {
+            await getEmployeePage(page)
+        }
     };
+
+    const cancel = () => {
+        setEditingKey('')
+    }
 
     const save = async (record) => {
         try {
@@ -81,7 +88,7 @@ function AddUser() {
         } catch (e) {
             console.log('Validate Failed:', e);
         }
-    };
+    }
 
     const columns = [
         {
@@ -190,7 +197,8 @@ function AddUser() {
                     columns={mergedColumns}
                     rowClassName="editable-row"
                     pagination={{
-                        onChange: cancel,
+                        onChange: getNextPage,
+                        total: totalItems
                     }}
                 />
             </Form>
