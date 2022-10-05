@@ -32,7 +32,7 @@ function Login({ dispatch }) {
         <Row justify='center' 
             align='middle' 
             className='login-wrapper'>
-            <Col span={6}>
+            <Col xs={{span: 20}} sm={{span: 14}} md={{span: 10}} lg={{span: 8}} xl={{span:6}} xxl={{span: 5}}>
                 <Row justify='center' className='pb-2'>
                     <SettingOutlined 
                         style={{fontSize: '45px'}}
