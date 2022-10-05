@@ -1,10 +1,12 @@
 import {  LogoutOutlined, UserOutlined } from '@ant-design/icons';
 import {  Menu, Dropdown, Space, Avatar } from 'antd';
 import { useAuth } from './../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 import React from 'react'
 
 function DashboardDropdown() {
     const { employee, dispatch } = useAuth()
+    const navigate = useNavigate()
     const avatarDropDown = [
         {
             key: 'profile',
@@ -21,6 +23,8 @@ function DashboardDropdown() {
     const handleMenuClick = (e) => {
         if(e.key === 'logOut') {
             dispatch({ type: 'LOGOUT'})
+        } else {
+            navigate(`/employee/${employee.id}`)
         }
     }
     

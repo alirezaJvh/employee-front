@@ -84,10 +84,12 @@ function AddUser() {
         try {
             const row = await form.validateFields();
             const data = {...record, ...row}
-            const res = await editEmployees({ headers, data })
+            console.log('input')
+            console.log(data)
+            await editEmployees({ headers, data })
             setEditingKey('')
             notification['success']({
-                message: res.data.message,
+                message: 'User updated successfully!',
                 placement: 'bottom',
             })
         } catch (e) {
@@ -216,7 +218,6 @@ function AddUser() {
     })
     return (
         <>
-            {console.log(employees)}
             <div className='title mb-4'> Dashboard </div>
             <Form form={form} component={false}>
                 <Table
