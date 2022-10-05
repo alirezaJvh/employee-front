@@ -216,6 +216,7 @@ function AddUser() {
     })
     return (
         <>
+            {console.log(employees)}
             <div className='title mb-4'> Dashboard </div>
             <Form form={form} component={false}>
                 <Table
