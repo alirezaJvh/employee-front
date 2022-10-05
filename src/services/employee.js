@@ -56,9 +56,50 @@ const deleteEmployee = async ({headers, data}) => {
     }
 }
 
+const getEmployeeById = async ({headers, id}) => {
+    try {
+        const url = `/employee/${id}`
+        const res = await axios({ headers, url})
+        return Promise.resolve(res)
+    } catch (e) {
+        console.log(e)
+        return Promise.reject(e)
+    }
+}
+
+const getEmployeesComment = async ({ headers, id }) => {
+    try {
+        const url = `/employee/${id}/comments`
+        const res = await axios({ headers, url })
+        return Promise.resolve(res)
+    } catch (e) {
+        console.log(e)
+        return Promise.reject(e)
+    }
+}
+
+const addComment = async ({ headers, id, autherId, text }) => {
+    try {
+        const url = `/employee/${id}/comments`
+        const res = await axios({ 
+            headers, 
+            url,
+            data: { text, autherId },
+            method: 'POST',
+        })
+        return Promise.resolve(res)
+    } catch (e) {
+        console.log(e)
+        return Promise.reject(e)
+    }
+}
+
 export { 
     getEmployees, 
     addEmployees,
     editEmployees,
     deleteEmployee,
+    getEmployeeById,
+    getEmployeesComment,
+    addComment,
 } 
