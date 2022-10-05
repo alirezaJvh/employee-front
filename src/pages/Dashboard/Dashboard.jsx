@@ -2,8 +2,8 @@ import { DashboardOutlined, UserAddOutlined, SettingOutlined } from '@ant-design
 import { Breadcrumb, Col, Layout, Row, Menu } from 'antd';
 import { Outlet, useNavigate } from 'react-router-dom';
 import React from 'react'
-import './Dashboard.css'
 import DashboardDropdown from '../../components/DashboardDropdown.jsx';
+import './Dashboard.css'
 
 function Dashboard() {
     const { Header, Content, Sider } = Layout;
@@ -50,7 +50,12 @@ function Dashboard() {
                 </Row>
             </Header>
             <Layout>
-                <Sider theme='light' collapsible width={200}>
+                <Sider 
+                    className='visible-desktop'
+                    theme='light' 
+                    collapsible 
+                    width={200}
+                >
                     <Menu 
                         onClick={changeRoute}
                         mode='inline' 

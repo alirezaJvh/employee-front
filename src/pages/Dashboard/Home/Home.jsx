@@ -46,14 +46,16 @@ function AddUser() {
     const [editingKey, setEditingKey] = useState('');
     const isEditing = (record) => record.id === editingKey;
 
-    const edit = (record) => {
+    const edit = (e, record) => {
+        e.stopPropagation();  
         form.setFieldsValue({
             ...record,
         });
         setEditingKey(record.id);
     }
 
-    const deleteItem = async({ id }) => {
+    const deleteItem = async(e, { id }) => {
+        e.stopPropagation();  
         try {
             // FIXME: remove deleted item
             const res = await deleteEmployee({ headers, data: { id } })
@@ -104,7 +106,7 @@ function AddUser() {
                         type='primary'
                         style={{marginRight: 5}}
                         icon={<EditOutlined />} 
-                        onClick={() => edit(record)} 
+                        onClick={(e) => edit(e, record)} 
                     >
                     </Button>
                     <Button 
@@ -113,7 +115,7 @@ function AddUser() {
                         type='danger'
                         style={{marginLeft: 5}}
                         icon={<DeleteOutlined />} 
-                        onClick={() => deleteItem(record)} 
+                        onClick={(e) => deleteItem(e, record)} 
                     >
                     </Button>
                 </Row>
@@ -142,6 +144,7 @@ function AddUser() {
             title: 'Email',
             dataIndex: 'email',
             editable: false,
+            responsive: ['lg']
         },
         {
             title: 'First Name',
@@ -157,12 +160,14 @@ function AddUser() {
             title: 'Role',
             dataIndex: 'role',
             editable: true,
+            responsive: ['lg']
         },
         {
             title: 'Address',
             dataIndex: 'address',
             width: '20%',
             editable: true,
+            responsive: ['lg']
         },
         {
             title: 'operation',
@@ -222,7 +227,9 @@ function AddUser() {
                     onRow={({ id }) => {
                         return {
                             onClick: () => {
-                                navigate(`/employee/${id}`)
+                                if (!editingKey) {
+                                    navigate(`/employee/${id}`)
+                                }
                             }
                         }
                     }}
