@@ -55,6 +55,7 @@ function AddUser() {
     }
 
     const deleteItem = async(e, { id }) => {
+        console.log('here')
         e.stopPropagation();  
         try {
             // FIXME: remove deleted item
@@ -109,15 +110,20 @@ function AddUser() {
                         onClick={(e) => edit(e, record)} 
                     >
                     </Button>
-                    <Button 
-                        disabled={editingKey !== ''} 
-                        shape='circle' 
-                        type='danger'
-                        style={{marginLeft: 5}}
-                        icon={<DeleteOutlined />} 
-                        onClick={(e) => deleteItem(e, record)} 
-                    >
-                    </Button>
+                    <Popconfirm 
+                        title="Sure to delete?" 
+                        onCancel={(e) => e.stopPropagation()} 
+                        onConfirm={(e) => deleteItem(e, record)}>
+                        <Button 
+                            disabled={editingKey !== ''} 
+                            shape='circle' 
+                            type='danger'
+                            style={{marginLeft: 5}}
+                            icon={<DeleteOutlined />} 
+                            onClick={(e) => e.stopPropagation()} 
+                        >
+                        </Button>
+                    </Popconfirm>
                 </Row>
             )
         }
@@ -127,6 +133,7 @@ function AddUser() {
                     disabled={true}
                     shape='circle' 
                     type='danger' 
+                    onClick={(e) => e.stopPropagation()} 
                     icon={<CloseCircleOutlined />}
                 >
                 </Button>
@@ -182,8 +189,7 @@ function AddUser() {
                                 marginRight: 8,
                             }}
                         >
-              Save
-              
+                            Save
                         </Typography.Link>
                         <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
                             <span>Cancel</span>
@@ -212,6 +218,7 @@ function AddUser() {
     })
     return (
         <>
+            <div className='title mb-4'> Dashboard </div>
             <Form form={form} component={false}>
                 <Table
                     components={{

@@ -3,6 +3,7 @@ import  { EditableRow }  from '../../../components/EditableTable/EditableRow.jsx
 import EditableCell from '../../../components/EditableTable/EditableCell.jsx';
 import FileDragger from '../../../components/FileDragger.jsx';
 import { Button, Popconfirm, Table, Row, Col, notification, Card } from 'antd';
+import { DeleteOutlined } from '@ant-design/icons';
 import { addEmployees } from '../../../services/employee.js';
 import { useAuth } from './../../../context/AuthContext'
 import React, { useState } from 'react';
@@ -62,7 +63,12 @@ const AddEmployee = () => {
             render: (_, record) =>
                 employees.length >= 1 ? (
                     <Popconfirm title="Sure to delete?" onConfirm={() => handleDelete(record.key)}>
-                        <span>Delete</span>
+                        <Button 
+                            type='danger'
+                            shape='circle'  
+                            icon={<DeleteOutlined />} 
+                        >
+                        </Button>
                     </Popconfirm>
                 ) : null,
         },
@@ -174,50 +180,53 @@ const AddEmployee = () => {
     }
 
     return (
-        <Card>
-            <Row justify='center'>
-                <Col span={8}>
-                    <FileDragger setEmployees={setEmployees}/>
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    <Button
-                        onClick={handleAdd}
-                        type="primary"
-                        style={{
-                            marginBottom: 15,
-                            marginTop: 30,
-                        }}
-                    >
+        <>
+            <div className='title mb-4'> Add Employee </div>
+            <Card>
+                <Row justify='center'>
+                    <Col span={8}>
+                        <FileDragger setEmployees={setEmployees}/>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Button
+                            onClick={handleAdd}
+                            type="primary"
+                            style={{
+                                marginBottom: 15,
+                                marginTop: 30,
+                            }}
+                        >
                     Add a row
-                    </Button>
-                </Col>
-                <Col>
-                    <Button 
-                        type="primary" 
-                        onClick={handleSubmit}
-                        style={{
-                            marginBottom: 15,
-                            marginTop: 30,
-                            marginLeft: 10,
-                        }}
-                    >
+                        </Button>
+                    </Col>
+                    <Col>
+                        <Button 
+                            type="primary" 
+                            onClick={handleSubmit}
+                            style={{
+                                marginBottom: 15,
+                                marginTop: 30,
+                                marginLeft: 10,
+                            }}
+                        >
                             Save Employee
-                    </Button>
-                </Col>
-            </Row>
-            <Table
-                bordered
-                loading={loading}
-                components={components}
-                rowClassName={() => 'editable-row'}
-                pagination={false}
-                dataSource={employees}
-                columns={columns}
-            />
-        </Card>
-    );
-};
+                        </Button>
+                    </Col>
+                </Row>
+                <Table
+                    bordered
+                    loading={loading}
+                    components={components}
+                    rowClassName={() => 'editable-row'}
+                    pagination={false}
+                    dataSource={employees}
+                    columns={columns}
+                />
+            </Card>
+        </>
+    )
+}
 
 export default AddEmployee;

@@ -1,5 +1,5 @@
 import { DashboardOutlined, UserAddOutlined, SettingOutlined } from '@ant-design/icons';
-import { Breadcrumb, Col, Layout, Row, Menu } from 'antd';
+import { Col, Layout, Row, Menu } from 'antd';
 import { Outlet, useNavigate } from 'react-router-dom';
 import React from 'react'
 import DashboardDropdown from '../../components/DashboardDropdown.jsx';
@@ -64,9 +64,6 @@ function Dashboard() {
                     />
                 </Sider>
                 <Layout style={{ padding: '0 24px 24px' }}>
-                    <Breadcrumb style={{ margin: '16px 0' }}>
-                        <Breadcrumb.Item>Home</Breadcrumb.Item>
-                    </Breadcrumb>
                     <Content className="site-layout-background content">
                         <Outlet />
                     </Content>
