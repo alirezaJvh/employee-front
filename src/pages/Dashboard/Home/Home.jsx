@@ -1,5 +1,5 @@
 import { Form, Input, Popconfirm, Table, Typography, Button, notification, Row } from 'antd';
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import React, { useState } from 'react';
 import { useEmployees } from '../../../hooks/useEmployees'
 import { editEmployees, deleteEmployee } from '../../../services/employee';
@@ -37,12 +37,14 @@ const EditableCell = ({
 };
 
 function AddUser() {
-    const { headers } = useAuth()
+    const { headers, employee } = useAuth()
     const [form] = Form.useForm();
+    const user = employee
     let { employees, totalItems, currentPage, loading, getEmployeePage } = useEmployees()
     const [editingKey, setEditingKey] = useState('');
     const isEditing = (record) => record.id === editingKey;
-
+    {console.log('user')}
+    {console.log(user)}
     const edit = (record) => {
         form.setFieldsValue({
             ...record,
@@ -81,6 +83,7 @@ function AddUser() {
             const row = await form.validateFields();
             const data = {...record, ...row}
             const res = await editEmployees({ headers, data })
+            setEditingKey('')
             notification['success']({
                 message: res.data.message,
                 placement: 'bottom',
@@ -88,6 +91,48 @@ function AddUser() {
         } catch (e) {
             console.log('Validate Failed:', e);
         }
+    }
+
+    const haveAccess = (record) => {
+        if (user.role === 'ADMIN') {
+            return (
+                <Row>
+                    <Button 
+                        disabled={editingKey !== ''} 
+                        shape='circle' 
+                        type='primary'
+                        style={{marginRight: 5}}
+                        icon={<EditOutlined />} 
+                        onClick={() => edit(record)} 
+                    >
+                    </Button>
+                    <Button 
+                        disabled={editingKey !== ''} 
+                        shape='circle' 
+                        type='danger'
+                        style={{marginLeft: 5}}
+                        icon={<DeleteOutlined />} 
+                        onClick={() => deleteItem(record)} 
+                    >
+                    </Button>
+                </Row>
+            )
+        }
+        return (
+            <Row justify='center'>
+                <Button 
+                    disabled={true}
+                    shape='circle' 
+                    type='danger' 
+                    icon={<CloseCircleOutlined />}
+                >
+                </Button>
+            </Row>
+        )
+        // console.log('Have Access')
+        // console.log('editingKey' + editingKey)
+        // console.log(user.role)
+        // return (editingKey !== '') && (user.role !== 'ADMIN')
     }
 
     const columns = [
@@ -143,26 +188,7 @@ function AddUser() {
                         </Popconfirm>
                     </span>
                 ) : (
-                    <Row>
-                        <Button 
-                            disabled={editingKey !== ''} 
-                            shape='circle' 
-                            type='primary'
-                            style={{marginRight: 5}}
-                            icon={<EditOutlined />} 
-                            onClick={() => edit(record)} 
-                        >
-                        </Button>
-                        <Button 
-                            disabled={editingKey !== ''} 
-                            shape='circle' 
-                            type='danger'
-                            style={{marginLeft: 5}}
-                            icon={<DeleteOutlined />} 
-                            onClick={() => deleteItem(record)} 
-                        >
-                        </Button>
-                    </Row>
+                    haveAccess(record)
                 );
             },
         },
