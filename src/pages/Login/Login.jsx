@@ -1,11 +1,13 @@
 import { LockOutlined, UserOutlined, SettingOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Col, Row, Typography } from 'antd';
+import { Button, Form, Input, Col, Row, Typography, notification } from 'antd';
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import './Login.css'
+import { useNavigate } from 'react-router-dom';
 import { loginEmployee } from '../../services'
+import './Login.css'
 function Login({ dispatch }) {
     const [loading, setLoading] = useState(false)
+    const navigage = useNavigate()
     const { Title } = Typography
 
     const handleSubmit = async ({username, password}) => {
@@ -16,8 +18,12 @@ function Login({ dispatch }) {
                 password,
             })
             if (payload.token) dispatch({ type: 'LOGIN', payload })
-        } catch (err) {
-            console.log(err)
+            notification['success']({ 
+                message: 'Welcome ;)', 
+                placement: 'bottom' })
+        } catch (e) {
+            const { message } = e.data
+            notification['error']({ message, placement: 'bottom' })
         } finally {
             setLoading(loading => !loading)
         }
@@ -75,7 +81,13 @@ function Login({ dispatch }) {
                             className="login-form-button">
                                 Log in
                         </Button>
-                        Or <span className='register'>register now!</span>
+                        Or
+                        <Button 
+                            type='link' 
+                            style={{paddingLeft: 5}} 
+                            onClick={() => navigage('/signup')}>
+                                register now!
+                        </Button>
                     </Form.Item>
                 </Form> 
             </Col>

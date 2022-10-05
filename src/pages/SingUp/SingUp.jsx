@@ -1,5 +1,5 @@
 import { LockOutlined, SettingOutlined, HomeOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Col, Row, Typography } from 'antd';
+import { Button, Form, Input, Col, Row, Typography, notification } from 'antd';
 import { useAuth } from '../../context/AuthContext'
 import { Navigate, useNavigate } from 'react-router-dom'
 import { signupEmployee, loginEmployee } from '../../services'
@@ -50,7 +50,8 @@ function SingUp({ dispatch }) {
             if (payload) dispatch({ type: 'LOGIN', payload })
             navigate('/')
         } catch (e) {
-            console.log(e.message)
+            const { message } = e.data
+            notification['error']({ message, placement: 'bottom'})
         } finally {
             setLoading(loading => !loading)
         }
